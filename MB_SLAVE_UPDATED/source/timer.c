@@ -15,6 +15,8 @@ unsigned long heartBeatCount  =0 ;
 UINT16 keypadUpdate_count  =0 ;
 UINT16 comUpdateCount = 0;
 UINT16 mmdUpdateCount = 0;
+INT16 timeStampUpdateCount = TIMESTAMP_DURATION;
+UINT32 AppTimestamp = 0;
 
 /*
 *------------------------------------------------------------------------------
@@ -47,6 +49,14 @@ void TMR0_ISR(void)
 	++keypadUpdate_count;
 	++comUpdateCount;
 	++mmdUpdateCount;
+
+	--timeStampUpdateCount;
+
+	if( timeStampUpdateCount <= 0 )
+	{
+		AppTimestamp++;
+		timeStampUpdateCount = TIMESTAMP_DURATION;
+	}
 }
 #pragma code
 
@@ -127,4 +137,23 @@ void TMR1_init(unsigned int reload , void (*func)())
 	tmr[1].reload = reload;
 	tmr[1].func = func;
 
+}
+
+
+
+UINT32 GetAppTime(void)
+{	
+	UINT32 temp;
+
+	DISABLE_TMR0_INTERRUPT();
+	temp  = AppTimestamp;
+	ENABLE_TMR0_INTERRUPT();
+	return temp;
+}
+
+void ResetAppTime(void)
+{
+	ENTER_CRITICAL_SECTION();
+	AppTimestamp = 0;
+	EXIT_CRITICAL_SECTION();
 }

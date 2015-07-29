@@ -175,8 +175,7 @@ void main(void)
 	RTC_Init();
 
 	//modbus initialization
-	eMBInit( MB_RTU, ( UCHAR )SLAVE_ID, 0, BAUD_RATE, MB_PAR_NONE);
-	eMBEnable(  );	/* Enable the Modbus Protocol Stack. */
+	eMBInit( ( UCHAR )SLAVE_ID, BAUD_RATE );
 
 	APP_init();
 
@@ -221,10 +220,11 @@ void main(void)
 			mmdUpdateCount = 0;
 		}
 
-		eMBPoll();
+			eMBPoll();		
 
 		if(keypadUpdate_count >= 10)
 		{
+
 			LinearKeyPad_scan();
 			keypadUpdate_count = 0;
 			count++;

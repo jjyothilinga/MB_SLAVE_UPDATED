@@ -15,6 +15,8 @@
 
 #define __FACTORY_CONFIGURATION__
 
+//TIMER Configuration
+#define TIMESTAMP_DURATION 		(200)
 
 //MMD module configuration
 

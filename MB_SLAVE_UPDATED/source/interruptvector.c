@@ -1,6 +1,6 @@
 #include "board.h"
 #include "timer.h"
-#include "port.h"
+#include "uart.h"
 
 
 /*
@@ -26,15 +26,9 @@ void high_interrupt (void)
 		_asm GOTO TMR1_ISR _endasm
 	}
 
-
-	if(PIR2bits.TMR3IF == 1)
-	{
-		_asm GOTO prvvTIMERExpiredISR _endasm
-	}
-
 	if(PIR1bits.RCIF == 1)
 	{
-		_asm GOTO prvvUARTRxISR _endasm
+		_asm GOTO UartReceiveHandler _endasm
 	}
 
 }
